@@ -1,0 +1,23 @@
+<script>
+    import {signOut} from "@auth/sveltekit/client";
+    import {page} from "$app/stores";
+</script>
+
+<h1>New User page</h1>
+<p>Create forms to collect user data,add data to database and update jwt roles and meta data if needed!</p>
+{#if $page.data.session}
+    {#if $page.data.session.user?.image}
+        <span
+                style="background-image: url('{$page.data.session.user.image}')"
+                class="avatar"
+        />
+    {/if}
+    <span class="signedInText">
+        <small>Signed in as</small><br/>
+        <strong>{$page.data.session.user?.name ?? "User"}</strong>
+      </span>
+    <div>
+        {$page.data.session.user?.roles}
+    </div>
+    <button on:click={() => signOut()} class="button">Sign out</button>
+{/if}
