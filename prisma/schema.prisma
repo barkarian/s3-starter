@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("SECRET_DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique //updateable and creatable by gui
+  firstName    String? //updateable and creatable by gui
+  lastName     String? //updateable and creatable by gui
+  phone        String? //updateable and creatable by gui
+  totalRevenue Float      @default(0) //updateable and creatable by gui
+  userApproved Boolean    @default(false) //updateable and creatable by gui
+  properties   Property[]
+}
+
+model Property {
+  id                     Int     @id @default(autoincrement())
+  ownerId                Int
+  chatGptIntegrationPlan Boolean @default(false)
+  FullyManagedPlan       Boolean @default(false)
+  totalRevenue           Float   @default(0)
+  siteUrl                String?
+  propertyApiKey         String?
+  user                   User    @relation(fields: [ownerId], references: [id])
+}

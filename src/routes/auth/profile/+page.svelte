@@ -16,7 +16,10 @@
         <strong>{$page.data.session.user?.name ?? "User"}</strong>
       </span>
     <div>
-        {$page.data.session.user?.roles}
+        {#if $page.data.session.user}
+            {$page.data.session.user["roles"]}
+
+        {/if}
     </div>
     <button on:click={() => signOut()} class="button">Sign out</button>
 {/if}
