@@ -1,6 +1,8 @@
 <script>
     import {signOut} from "@auth/sveltekit/client";
     import {page} from "$app/stores";
+    export let data;
+    const {roles,meta}=data;
 </script>
 
 <h1>New User page</h1>
@@ -17,7 +19,9 @@
         <strong>{$page.data.session.user?.name ?? "User"}</strong>
       </span>
     <div>
-        {$page.data.session.user?.roles}
+        {#if roles}
+            {roles}
+        {/if}
     </div>
     <button on:click={() => signOut()} class="button">Sign out</button>
 {/if}

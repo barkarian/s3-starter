@@ -4,12 +4,16 @@ import { redirect, type Handle } from '@sveltejs/kit';
 import { PUBLIC_GOOGLE_ID } from '$env/static/public';
 import { SECRET_ADMIN_EMAIL, SECRET_AUTH_SECRET, SECRET_GOOGLE_SECRET } from '$env/static/private';
 import { sequence } from '@sveltejs/kit/hooks';
+import type { Session } from './app';
 
 export const handle: Handle = sequence(
 	SvelteKitAuth(async (event) => {
 		// const authOptions: SvelteKitAuthConfig
 		const authOptions: SvelteKitAuthConfig = {
-			providers: [Google({ clientId: PUBLIC_GOOGLE_ID, clientSecret: SECRET_GOOGLE_SECRET })],
+			providers: [
+				//@ts-ignore
+				Google({ clientId: PUBLIC_GOOGLE_ID, clientSecret: SECRET_GOOGLE_SECRET })
+			],
 			callbacks: {
 				async jwt(jwtCallbackParams: any) {
 					const { token, user } = jwtCallbackParams;
@@ -42,13 +46,6 @@ export const handle: Handle = sequence(
 							token['meta'] = userFromDb['meta'];
 						}
 					}
-					// console.log({
-					// 	msg: 'Inside jwt callback',
-					// 	stepDescription: 'Retrieving user roles from database and add them to jwt token.',
-					// 	jwtEntity,
-					// 	token,
-					// 	user
-					// });
 					return token;
 				},
 				session(sessionCallbackParams: any) {
@@ -77,8 +74,8 @@ export const handle: Handle = sequence(
 async function authorization(handleInput: any) {
 	const { event, resolve } = handleInput;
 	// Protect any routes under /authenticated
-	console.log({ authorizationSession: await event.locals.getSession() });
-	const session = await event.locals.getSession();
+	// console.log({ authorizationSession: await event.locals.getSession() });
+	const session: Session = await event.locals.getSession();
 
 	// //In case of new user
 	if (event.url.pathname.startsWith('/authenticated-admin')) {

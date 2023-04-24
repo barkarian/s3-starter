@@ -1,6 +1,9 @@
 <script lang="ts">
     import {signIn, signOut} from "@auth/sveltekit/client"
     import {page} from "$app/stores"
+    export let data;
+    const {roles,meta}=data;
+    console.log(roles,meta)
 </script>
 
 <h1>SvelteKit Auth Example</h1>
@@ -17,7 +20,9 @@
         <strong>{$page.data.session.user?.name ?? "User"}</strong>
       </span>
         <div>
-            {$page.data.session.user?.roles}
+            {#if roles}
+                {roles}
+            {/if}
         </div>
         <button on:click={() => signOut()} class="button">Sign out</button>
     {:else}
