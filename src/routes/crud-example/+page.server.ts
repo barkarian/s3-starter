@@ -41,7 +41,6 @@ export const load: PageServerLoad = async (event) => {
 		return fail(400, { error: guiPaginationData.error });
 	}
 	//TODO add error handling here
-	console.log({ guiPaginationData });
 	return {
 		createForm,
 		updateForm,
