@@ -46,6 +46,9 @@ export const handle: Handle = sequence(
 							token['meta'] = userFromDb['meta'];
 						}
 					}
+					// console.log({
+					// 	msg: 'Inside jwt callback',
+					// });
 					return token;
 				},
 				session(sessionCallbackParams: any) {
@@ -56,9 +59,6 @@ export const handle: Handle = sequence(
 					}
 					// console.log({
 					// 	msg: 'Inside session callback',
-					// 	token,
-					// 	session,
-					// 	roles: session.user["roles]
 					// });
 					return session;
 				}
@@ -74,7 +74,6 @@ export const handle: Handle = sequence(
 async function authorization(handleInput: any) {
 	const { event, resolve } = handleInput;
 	// Protect any routes under /authenticated
-	// console.log({ authorizationSession: await event.locals.getSession() });
 	const session: Session = await event.locals.getSession();
 
 	// //In case of new user
@@ -86,24 +85,10 @@ async function authorization(handleInput: any) {
 			throw redirect(303, '/auth');
 		}
 	}
-	//AUTH ROUTE SETUP
-	// if (event.url.pathname.startsWith('/auth/new-user')) {
-	//     if (!session || !session.user) {
-	//         throw redirect(303, '/auth');
-	//     }
-	//     if (!session.user["roles"].includes('new-user')) {
-	//         throw redirect(303, '/');
-	//     }
-	// }
-	// if (event.url.pathname.startsWith('/auth/profile')) {
-	//     if (!session || !session.user) {
-	//         throw redirect(303, '/auth');
-	//     }
-	//     if (session.user["roles"].includes('new-user')) {
-	//         throw redirect(303, '/auth/new-user');
-	//     }
-	// }
 
 	// If the request is still here, just proceed as normally
+	event.locals.session = session;
+	console.log({ authorizationSession: await event.locals.getSession() });
+
 	return resolve(event);
 }

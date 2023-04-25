@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async (event) => {
-	const session = getSessionWithRolesAndMeta(await event.locals.getSession());
+	const session = event.locals.session;
 	if (!session || !session.user) {
 		throw redirect(303, '/auth');
 	}

@@ -3,7 +3,6 @@
     import {page} from "$app/stores"
     export let data;
     const {roles,meta}=data;
-    console.log(roles,meta)
 </script>
 
 <h1>SvelteKit Auth Example</h1>
@@ -21,7 +20,7 @@
       </span>
         <div>
             {#if roles}
-                {roles}
+                {$page.data.session.user}
             {/if}
         </div>
         <button on:click={() => signOut()} class="button">Sign out</button>

@@ -4,9 +4,7 @@ import type { LayoutServerLoad } from './$types';
 export const load: LayoutServerLoad = async (event) => {
 	//Whatever is loaded here is accessible via the store $page.data.<property>
 	//You can access session using this store: $page.data.session
-	const sessionFromSessionCallback: any = await event.locals.getSession();
-	const session = getSessionWithRolesAndMeta(sessionFromSessionCallback);
 	return {
-		session
+		session: event.locals.session
 	};
 };

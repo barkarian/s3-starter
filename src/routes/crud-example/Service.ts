@@ -185,7 +185,6 @@ export async function findConfigurations(
 export async function deleteConfiguration(event: RequestEvent): Promise<GuiData<User>> {
 	//VALIDATE FORM
 	const form = await superValidate(event, removeFormSchema);
-	console.log(form);
 	if (!form.valid) {
 		return {
 			form,
@@ -219,7 +218,6 @@ export async function deleteConfiguration(event: RequestEvent): Promise<GuiData<
 export async function updateConfiguration(event: RequestEvent): Promise<GuiData<User>> {
 	//VALIDATE FORM
 	const form = await superValidate(event, updateFormSchema);
-	console.log(form);
 	if (!form.valid) {
 		return {
 			form,
@@ -238,11 +236,6 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 		lastName: form.data.lastName,
 		phone: form.data.phone
 	};
-	console.log({
-		formData: form?.data,
-		configurationId,
-		configurationUpdate
-	});
 	//API LAYER
 	try {
 		const updatedUser: User = await prismaClient.user.update({

@@ -4,7 +4,7 @@ import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async (event) => {
 	//In case of new user
-	const session = getSessionWithRolesAndMeta(await event.locals.getSession());
+	const session = event.locals.session;
 	//New user case
 	if (session?.user && session.user.roles.includes('new-user')) {
 		throw redirect(303, '/auth/new-user');

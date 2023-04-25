@@ -29,7 +29,6 @@
 			
     function mySelectionHandler(rowMetaValue:any){
         selection=rowMetaValue.detail
-        console.log({selection})
         modalStore.trigger(createModal());
     }
 
