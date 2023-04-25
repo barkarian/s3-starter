@@ -88,7 +88,7 @@ async function authorization(handleInput: any) {
 
 	// If the request is still here, just proceed as normally
 	event.locals.session = session;
-	console.log({ authorizationSession: await event.locals.getSession() });
+	// console.log({ authorizationSession: await event.locals.getSession() });
 
 	return resolve(event);
 }

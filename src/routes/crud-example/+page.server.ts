@@ -15,6 +15,7 @@ import { PUBLIC_DEFAULT_LIMIT, PUBLIC_INVALID_FORM_STATUS } from '$env/static/pu
 //Configuration Types
 //LOADING DATA----------------------------------------------------------------------
 export const load: PageServerLoad = async (event) => {
+	console.log('load is running again:' + event.url);
 	// Server API:
 	const [createForm, updateForm, removeForm] = await Promise.all([
 		superValidate(event, createFormSchema),
@@ -28,7 +29,7 @@ export const load: PageServerLoad = async (event) => {
 	const createFormAction = 'create';
 	//On search configuration Filter must be empty
 	const limit = Number(event.url.searchParams.get('limit') ?? PUBLIC_DEFAULT_LIMIT);
-	const page = Number(event.url.searchParams.get('page') ?? 1);
+	const page = Number(event.url.searchParams.get('page') ?? 0);
 	// console.log({
 	//     msg: 'Load is running',
 	//     limit,
@@ -40,6 +41,7 @@ export const load: PageServerLoad = async (event) => {
 		return fail(400, { error: guiPaginationData.error });
 	}
 	//TODO add error handling here
+	console.log({ guiPaginationData });
 	return {
 		createForm,
 		updateForm,

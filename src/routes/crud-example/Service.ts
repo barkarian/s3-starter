@@ -151,7 +151,7 @@ export async function findConfigurations(
 	try {
 		const users: User[] = await prismaClient.user.findMany({
 			where: filter,
-			skip: (page - 1) * limit,
+			skip: page * limit,
 			take: limit,
 			select: {
 				id: true,
