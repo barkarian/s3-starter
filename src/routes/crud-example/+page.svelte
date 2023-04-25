@@ -24,7 +24,11 @@
 			'id',
 			'email',
 			'firstName',
-			'lastName'
+			'lastName',
+			'phone',
+			'totalRevenue',
+			'userApproved',
+			'properties'
 		]),
 		// Optional: A list of footer labels.
 		foot: ['Total', '', '<code>31.7747</code>']
@@ -69,7 +73,7 @@
 			// Pass a reference to your custom component
 			ref: CrudElement,
 			// Add the component properties as key/value pairs
-			props: { background: 'bg-red-500', selection: selection },
+			props: { selection: selection },
 			// Provide a template literal for the default component slot
 			slot: '<p>Skeleton</p>'
 		};

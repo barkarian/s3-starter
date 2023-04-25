@@ -1,9 +1,10 @@
 <script lang="ts">
+	import type { User } from '@prisma/client';
+
 	// Props
 	/** Exposes parent props to this component. */
 	export let parent: any;
-    export let selection:any=undefined;
-    export let background:any=undefined;
+	export let selection: User | null = null;
 	// Stores
 	import { modalStore } from '@skeletonlabs/skeleton';
 	// Form Data
@@ -27,7 +28,7 @@
 
 {#if $modalStore[0]}
 	<div class="modal-example-form {cBase}">
-        {JSON.stringify({selection,background,parent})}
+		{JSON.stringify({ selection, parent })}
 		<header class={cHeader}>{$modalStore[0].title ?? '(title missing)'}</header>
 		<article>{$modalStore[0].body ?? '(body missing)'}</article>
 		<!-- Enable for debugging: -->
@@ -43,7 +44,12 @@
 			</label>
 			<label class="label">
 				<span>Email</span>
-				<input class="input" type="email" bind:value={formData.email} placeholder="Enter email address..." />
+				<input
+					class="input"
+					type="email"
+					bind:value={formData.email}
+					placeholder="Enter email address..."
+				/>
 			</label>
 		</form>
 		<!-- prettier-ignore -->
