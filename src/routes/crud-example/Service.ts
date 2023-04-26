@@ -36,9 +36,9 @@ export type GuiPaginationData<T> = {
 // Define Create Schema
 export const createFormSchema = z.object({
 	email: z.string().email(),
-	firstName: z.string(),
-	lastName: z.string(),
-	phone: z.string(),
+	firstName: z.string().min(1),
+	lastName: z.string().min(1),
+	phone: z.string().min(1),
 	userApproved: z.boolean()
 });
 

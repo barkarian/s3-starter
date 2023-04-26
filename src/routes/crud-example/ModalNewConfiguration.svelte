@@ -47,40 +47,48 @@
 			<label class="label">
 				<span>First Name</span>
 				<input
-					class="input"
 					type="text"
 					name="firstName"
 					bind:value={$form.firstName}
+					class="input {$errors.firstName ? 'input-error' : ''}"
+					data-invalid={$errors.firstName}
+					{...$constraints.firstName}
 					placeholder="Enter first name..."
 				/>
 			</label>
 			<label class="label">
 				<span>Last name</span>
 				<input
-					class="input"
 					type="text"
 					name="lastName"
 					bind:value={$form.lastName}
+					class="input {$errors.lastName ? 'input-error' : ''}"
+					data-invalid={$errors.lastName}
+					{...$constraints.lastName}
 					placeholder="Enter last name..."
 				/>
 			</label>
 			<label class="label">
 				<span>Email</span>
 				<input
-					class="input"
 					type="email"
 					name="email"
 					bind:value={$form.email}
+					class="input {$errors.email ? 'input-error' : ''}"
+					data-invalid={$errors.email}
+					{...$constraints.email}
 					placeholder="Enter email address..."
 				/>
 			</label>
 			<label class="label">
 				<span>Phone number</span>
 				<input
-					class="input"
 					type="text"
 					name="phone"
 					bind:value={$form.phone}
+					class="input {$errors.phone ? 'input-error' : ''}"
+					data-invalid={$errors.phone}
+					{...$constraints.phone}
 					placeholder="Enter phone number..."
 				/>
 			</label>
