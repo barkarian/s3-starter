@@ -35,10 +35,11 @@
 
 {#if $modalStore[0]}
 	<div class="modal-example-form {cBase}">
-		<SuperDebug data={$form} />
-		<header class={cHeader}>{$modalStore[0].title ?? 'Add Filters Modals'}</header>
+		<!-- <SuperDebug data={$form} /> -->
+		<header class={cHeader}>{$modalStore[0].title ?? 'Create new configuration'}</header>
 		<article>
-			{$modalStore[0].body ?? 'Please add one or more filters from the form below...'}
+			{$modalStore[0].body ??
+				'Please fill the configuration data you like to insert on the Database'}
 		</article>
 		<!-- Enable for debugging: -->
 		<!-- <pre>{JSON.stringify(formData, null, 2)}</pre> -->
