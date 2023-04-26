@@ -4,10 +4,20 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+	import FormNotifications from '$lib/components/FormNotifications.svelte';
 	export let parent: any;
 	export let data: PageData;
+	let formResult: any;
+
 	const { createForm: formData } = data;
-	const { form, errors, constraints, enhance, delayed, message, empty } = superForm(formData);
+	const { form, errors, constraints, enhance, delayed, message, empty, valid } = superForm(
+		formData,
+		{
+			onResult: (e) => {
+				formResult = e.result;
+			}
+		}
+	);
 	// Base Classes
 	const cBase = 'card p-4 w-modal shadow-xl space-y-4';
 	const cHeader = 'text-2xl font-bold';
@@ -17,6 +27,8 @@
 		console.log('SUBMITTED');
 	}
 </script>
+
+<FormNotifications {formResult} />
 
 {#if $modalStore[0]}
 	<div class="modal-example-form {cBase}">
@@ -68,7 +80,7 @@
 					placeholder="Enter phone number..."
 				/>
 			</label>
-			{#if $message}
+			{#if valid && $message}
 				<p>
 					{$message}
 					{$page.status}
