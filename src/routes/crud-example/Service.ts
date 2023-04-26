@@ -46,7 +46,8 @@ export const updateFormSchema = z.object({
 	id: z.number().int(),
 	firstName: z.string().optional(),
 	lastName: z.string().optional(),
-	phone: z.string().optional()
+	phone: z.string().optional(),
+	userApproved: z.boolean().optional()
 });
 
 // Define Remove Schema
@@ -256,7 +257,7 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 
 export async function createConfiguration(event: RequestEvent): Promise<GuiData<User>> {
 	//VALIDATE FORM
-	const form = await superValidate(event, updateFormSchema);
+	const form = await superValidate(event, createFormSchema);
 	if (!form.valid) {
 		return {
 			form,
@@ -268,10 +269,10 @@ export async function createConfiguration(event: RequestEvent): Promise<GuiData<
 	}
 	//FORM TO DTOS
 	const configuration: Prisma.UserCreateInput = {
-		email: 'newuser@example.com',
-		firstName: 'New',
-		lastName: 'User',
-		phone: '555-555-5555',
+		email: form.data.email,
+		firstName: form.data.firstName,
+		lastName: form.data.lastName,
+		phone: form.data.phone,
 		totalRevenue: 0,
 		userApproved: false
 	};

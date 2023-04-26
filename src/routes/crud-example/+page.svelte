@@ -37,7 +37,8 @@
 	function newConfigurationModal(): ModalSettings {
 		const modalComponent: ModalComponent = {
 			// Pass a reference to your custom component
-			ref: NewConfigurationModal
+			ref: NewConfigurationModal,
+			props: { data: data }
 			// Provide a template literal for the default component slot
 		};
 

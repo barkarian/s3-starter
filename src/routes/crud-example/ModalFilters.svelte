@@ -25,7 +25,6 @@
 </script>
 
 {#if $modalStore[0]}
-	<p>Filter Form</p>
 	<div class="modal-example-form {cBase}">
 		<header class={cHeader}>{$modalStore[0].title ?? 'Add Filters Modals'}</header>
 		<article>
@@ -41,23 +40,23 @@
 			<!-- Don't remove them they are used to keep paginator settings after filtering -->
 
 			<label class="label">
-				<span>Name</span>
+				<span>First name</span>
 				<input
 					class="input"
 					type="text"
 					name="firstName"
 					bind:value={filters.firstName}
-					placeholder="Enter name..."
+					placeholder="Enter first name..."
 				/>
 			</label>
 			<label class="label">
-				<span>Phone Number</span>
+				<span>Last name</span>
 				<input
 					class="input"
 					type="text"
 					name="lastName"
 					bind:value={filters.lastName}
-					placeholder="Enter phone..."
+					placeholder="Enter last name..."
 				/>
 			</label>
 			<label class="label">
