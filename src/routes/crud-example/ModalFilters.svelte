@@ -1,24 +1,31 @@
 <script lang="ts">
-	import { modalStore } from '@skeletonlabs/skeleton';
+	import { modalStore, toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { FiltersQueryParams } from './Service';
-	import { PUBLIC_DEFAULT_LIMIT } from '$env/static/public';
 	import { page } from '$app/stores';
 	import HiddenFormInputPaginatorSettings from '$lib/components/HiddenFormInputPaginatorSettings.svelte';
 	export let parent: any;
 
 	//find configurations from findManyActionName
 	let filters: FiltersQueryParams = {
-		firstName: '',
-		lastName: '',
-		email: ''
+		firstName: $page.url.searchParams.get('firstName') ?? '',
+		lastName: $page.url.searchParams.get('lastName') ?? '',
+		email: $page.url.searchParams.get('email') ?? ''
 	};
-	//Don't remove them used for PAGINATION STATE
-	// let limit = Number($page.url.searchParams.get('limit') ?? PUBLIC_DEFAULT_LIMIT);
-	// let currentPage = Number($page.url.searchParams.get('page') ?? 1);
 	// Base Classes
 	const cBase = 'card p-4 w-modal shadow-xl space-y-4';
 	const cHeader = 'text-2xl font-bold';
 	const cForm = 'border border-surface-500 p-4 space-y-4 rounded-container-token';
+
+	//TOAST MESSAGE
+	const t: ToastSettings = {
+		message: 'Filters are set...',
+		timeout: 3000
+	};
+	//Handle submit
+	function handleSubmit() {
+		modalStore.close();
+		toastStore.trigger(t);
+	}
 </script>
 
 {#if $modalStore[0]}
@@ -69,7 +76,7 @@
 			<!-- prettier-ignore -->
 			<footer class="modal-footer {parent.regionFooter}">
 				<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>{parent.buttonTextCancel}</button>
-				<button type="submit" class="btn {parent.buttonPositive}">Submit Form</button>
+				<button type="submit" class="btn {parent.buttonPositive}" on:click={handleSubmit}>Submit Form</button>
 			</footer>
 		</form>
 	</div>
