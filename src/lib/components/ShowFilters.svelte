@@ -2,4 +2,4 @@
 	export let filters: any;
 </script>
 
-{JSON.stringify(filters)}
+<!-- {JSON.stringify(filters)} -->

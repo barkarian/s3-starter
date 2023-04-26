@@ -38,7 +38,8 @@ export const createFormSchema = z.object({
 	email: z.string().email(),
 	firstName: z.string(),
 	lastName: z.string(),
-	phone: z.string()
+	phone: z.string(),
+	userApproved: z.boolean()
 });
 
 // Define Update Schema
@@ -274,7 +275,7 @@ export async function createConfiguration(event: RequestEvent): Promise<GuiData<
 		lastName: form.data.lastName,
 		phone: form.data.phone,
 		totalRevenue: 0,
-		userApproved: false
+		userApproved: form.data.userApproved
 	};
 	//API LAYER
 	try {

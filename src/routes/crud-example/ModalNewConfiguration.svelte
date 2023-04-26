@@ -26,6 +26,9 @@
 	function handleSubmit() {
 		console.log('SUBMITTED');
 	}
+	//reactive form components
+	let selectUserApproved = 'non-approved';
+	let userApproved = false;
 </script>
 
 <FormNotifications {formResult} />
@@ -79,6 +82,19 @@
 					bind:value={$form.phone}
 					placeholder="Enter phone number..."
 				/>
+			</label>
+			<input class="hidden" bind:checked={userApproved} type="checkbox" name="userApproved" />
+			<label class="label">
+				<span>User status</span>
+				<select
+					bind:value={selectUserApproved}
+					on:change={() => (userApproved = selectUserApproved === 'non-approved' ? false : true)}
+					class="select"
+					size="2"
+				>
+					<option value="approved">Approved</option>
+					<option value="non-approved">Non approved</option>
+				</select>
 			</label>
 			<!-- prettier-ignore -->
 			<footer class="modal-footer {parent.regionFooter}">

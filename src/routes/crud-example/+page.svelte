@@ -60,11 +60,6 @@
 	}
 </script>
 
-<!-- Search by filters and add new Configuration options -->
-<!-- <button type="button" class="btn variant-filled">
-	<span>(icon)</span>
-	<span>Button</span>
-</button> -->
 <button type="button" class="btn variant-filled" on:click={openFilterModal}>
 	<span>⚙️</span>
 	<span>Add filters</span>
