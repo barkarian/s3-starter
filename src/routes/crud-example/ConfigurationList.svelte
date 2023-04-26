@@ -2,9 +2,7 @@
 	import { modalStore } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
-	import CrudElement from './RUDElement.svelte';
-	import Pagination from './Pagination.svelte';
-	import FilterForm from './FilterForm.svelte';
+	import CrudElement from './ModalRUDElement.svelte';
 
 	export let items: any[];
 
@@ -32,11 +30,6 @@
 		foot: ['Total', '', '<code>31.7747</code>']
 	};
 
-	function mySelectionHandler(rowMetaValue: any) {
-		selection = rowMetaValue.detail;
-		modalStore.trigger(createModal());
-	}
-
 	//Modal
 	function createModal(): ModalSettings {
 		const modalComponent: ModalComponent = {
@@ -54,6 +47,11 @@
 			component: modalComponent
 		};
 		return d;
+	}
+
+	function mySelectionHandler(rowMetaValue: any) {
+		selection = rowMetaValue.detail;
+		modalStore.trigger(createModal());
 	}
 
 	// function onClose(){
