@@ -6,11 +6,7 @@
 	export let parent: any;
 
 	//find configurations from findManyActionName
-	let filters: FiltersQueryParams = {
-		firstName: $page.url.searchParams.get('firstName') ?? '',
-		lastName: $page.url.searchParams.get('lastName') ?? '',
-		email: $page.url.searchParams.get('email') ?? ''
-	};
+	export let filters: FiltersQueryParams;
 	// Base Classes
 	const cBase = 'card p-4 w-modal shadow-xl space-y-4';
 	const cHeader = 'text-2xl font-bold';
@@ -18,7 +14,7 @@
 
 	//TOAST MESSAGE
 	const t: ToastSettings = {
-		message: 'Filters are set...',
+		message: 'Search by filters ...',
 		timeout: 3000
 	};
 	//Handle submit
@@ -31,11 +27,12 @@
 {#if $modalStore[0]}
 	<p>Filter Form</p>
 	<div class="modal-example-form {cBase}">
-		<header class={cHeader}>{$modalStore[0].title ?? '(title missing)'}</header>
-		<article>{$modalStore[0].body ?? '(body missing)'}</article>
+		<header class={cHeader}>{$modalStore[0].title ?? 'Add Filters Modals'}</header>
+		<article>
+			{$modalStore[0].body ?? 'Please add one or more filters from the form below...'}
+		</article>
 		<!-- Enable for debugging: -->
 		<!-- <pre>{JSON.stringify(formData, null, 2)}</pre> -->
-		{$page.route.id}
 		<form action={$page.route.id} method="GET" class="modal-form {cForm}">
 			<!-- Don't remove them they are used to keep paginator settings after filtering -->
 			<!-- <input class="hidden" type="text" name="page" bind:value={currentPage} />

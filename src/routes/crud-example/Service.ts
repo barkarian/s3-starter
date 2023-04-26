@@ -168,7 +168,7 @@ export async function findConfigurations(
 			pagination: {
 				limit,
 				page,
-				totalCount: await prismaClient.user.count()
+				totalCount: await prismaClient.user.count({ where: filter })
 			}
 		};
 	} catch (e) {

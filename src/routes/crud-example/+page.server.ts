@@ -30,12 +30,7 @@ export const load: PageServerLoad = async (event) => {
 	//On search configuration Filter must be empty
 	const limit = Number(event.url.searchParams.get('limit') ?? PUBLIC_DEFAULT_LIMIT);
 	const page = Number(event.url.searchParams.get('page') ?? 0);
-	// console.log({
-	//     msg: 'Load is running',
-	//     limit,
-	//     page
-	//     // url: event.url
-	// })
+
 	let guiPaginationData = await findConfigurations(limit, page, event);
 	if (guiPaginationData.error) {
 		return fail(400, { error: guiPaginationData.error });
