@@ -38,7 +38,7 @@
 
 <Modal zIndex="z-[888]" />
 <!-- App Shell -->
-<AppShell slotSidebarLeft="w-0 md:w-52 bg-surface-500/10 p-4">
+<AppShell slotSidebarLeft="w-0 md:w-52 md:p-4 bg-surface-500/10">
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
 		<AppBar>
