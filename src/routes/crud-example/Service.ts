@@ -49,7 +49,7 @@ export const updateFormSchema = z.object({
 	lastName: z.string().min(1).optional(),
 	email: z.string().min(1).optional(),
 	phone: z.string().min(1).optional(),
-	userApproved: z.boolean().optional()
+	userApproved: z.boolean().optional().default(false)
 });
 
 // Define Remove Schema
@@ -230,6 +230,7 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 			}
 		};
 	}
+	console.log(form.data);
 	//FORM TO DTOS
 	const configurationId: Prisma.UserWhereUniqueInput = {
 		id: form.data.id
@@ -241,14 +242,12 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 		email: form.data.email,
 		userApproved: form.data.userApproved
 	};
-	console.log({ configurationUpdate });
 	//API LAYER
 	try {
 		const updatedUser: User = await prismaClient.user.update({
 			where: configurationId,
 			data: configurationUpdate
 		});
-		console.log(updatedUser);
 		return { data: updatedUser, form };
 	} catch (e) {
 		return {

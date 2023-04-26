@@ -49,6 +49,7 @@
 		$updateForm.lastName = selection.lastName ?? undefined;
 		$updateForm.phone = selection.phone ?? undefined;
 		$updateForm.userApproved = selection.userApproved;
+		selectUserApproved = $updateForm.userApproved === true ? 'approved' : 'non-approved';
 	}
 	// Base Classes
 	const cBase = 'card p-4 w-modal shadow-xl space-y-4';
@@ -60,7 +61,6 @@
 	}
 	//reactive form components
 	let selectUserApproved = 'non-approved';
-	let userApproved = false;
 </script>
 
 <FormNotifications {formResult} />
@@ -145,12 +145,15 @@
 					placeholder="Enter phone number..."
 				/>
 			</label>
-			<input class="hidden" bind:checked={userApproved} type="checkbox" name="userApproved" />
+			{selectUserApproved}
+			{$updateForm.userApproved}
+			<input bind:checked={$updateForm.userApproved} type="checkbox" name="userApproved" />
 			<label class="label">
 				<span>User status</span>
 				<select
 					bind:value={selectUserApproved}
-					on:change={() => (userApproved = selectUserApproved === 'non-approved' ? false : true)}
+					on:change={() =>
+						($updateForm.userApproved = selectUserApproved === 'approved' ? true : false)}
 					class="select"
 					size="2"
 				>
@@ -161,7 +164,7 @@
 			<!-- prettier-ignore -->
 			<footer class="modal-footer {parent.regionFooter}">
 			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>{parent.buttonTextCancel}</button>
-			<button type="submit" class="btn {parent.buttonPositive}" on:click={handleSubmit}>Submit Form</button>
+			<button type="submit" class="btn {parent.buttonPositive}" on:click={handleSubmit}>Update</button>
 			</footer>
 		</form>
 	</div>

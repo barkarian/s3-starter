@@ -3,17 +3,20 @@
 	import { page } from '$app/stores';
 	import { PUBLIC_DEFAULT_LIMIT } from '$env/static/public';
 	import { Paginator } from '@skeletonlabs/skeleton';
-	export let totalItems: number;
-	//Filter settings
-
+	import type { PaginationSettings } from '@skeletonlabs/skeleton/dist/components/Paginator/types';
 	// PaginatorSettings
-	//find configurations from findManyActionName
-	let paginationSettings = {
-		offset: Number($page.url.searchParams.get('page') ?? 1),
-		limit: Number($page.url.searchParams.get('limit') ?? PUBLIC_DEFAULT_LIMIT),
-		size: totalItems,
-		amounts: [1, 2, 5, 10]
-	};
+	export let totalItems: number;
+	let paginationSettings: PaginationSettings;
+	$: onTotalItemsChange(totalItems);
+
+	function onTotalItemsChange(totalItems: number) {
+		paginationSettings = {
+			offset: Number($page.url.searchParams.get('page') ?? 1),
+			limit: Number($page.url.searchParams.get('limit') ?? PUBLIC_DEFAULT_LIMIT),
+			size: totalItems,
+			amounts: [1, 2, 5, 10]
+		};
+	}
 
 	function onPageChange(e: CustomEvent): void {
 		console.log('onPageChange', e.detail, paginationSettings);
@@ -33,4 +36,5 @@
 	}
 </script>
 
+{totalItems}
 <Paginator bind:settings={paginationSettings} on:page={onPageChange} on:amount={onAmountChange} />
