@@ -8,7 +8,7 @@
 
 	// PaginatorSettings
 	//find configurations from findManyActionName
-	$: paginationSettings = {
+	let paginationSettings = {
 		offset: Number($page.url.searchParams.get('page') ?? 1),
 		limit: Number($page.url.searchParams.get('limit') ?? PUBLIC_DEFAULT_LIMIT),
 		size: totalItems,
@@ -16,10 +16,12 @@
 	};
 
 	function onPageChange(e: CustomEvent): void {
+		console.log('onPageChange', e.detail, paginationSettings);
 		updatePageOnPaginationChange(paginationSettings.offset, paginationSettings.limit);
 	}
 
 	function onAmountChange(e: CustomEvent): void {
+		console.log('onAmountChange', e.detail, paginationSettings);
 		paginationSettings.offset = 0;
 		updatePageOnPaginationChange(paginationSettings.offset, e.detail);
 	}

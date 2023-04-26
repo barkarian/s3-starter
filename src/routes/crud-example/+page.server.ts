@@ -61,7 +61,11 @@ export const actions: Actions = {
 		}
 
 		// Yep, return { form } here too
-		return { form };
+		return message(form, 'Successfully created', {
+			status: 200,
+			valid: true
+		});
+		// return { form };
 	},
 	update: async (event) => {
 		const { data, error, form } = await updateConfiguration(event);
