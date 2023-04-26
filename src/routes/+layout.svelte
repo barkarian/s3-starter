@@ -31,11 +31,12 @@
 	}
 </script>
 
-<Toast position="tr" />
 <Drawer>
 	<Navigation />
 </Drawer>
-<Modal />
+<Toast zIndex="z-[999]" position="tr" />
+
+<Modal zIndex="z-[888]" />
 <!-- App Shell -->
 <AppShell slotSidebarLeft="w-0 md:w-52 bg-surface-500/10 p-4">
 	<svelte:fragment slot="header">
