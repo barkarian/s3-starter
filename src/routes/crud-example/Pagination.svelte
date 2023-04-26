@@ -3,12 +3,12 @@
 	import { page } from '$app/stores';
 	import { PUBLIC_DEFAULT_LIMIT } from '$env/static/public';
 	import { Paginator } from '@skeletonlabs/skeleton';
-	export let totalItems;
+	export let totalItems: number;
 	//Filter settings
 
 	// PaginatorSettings
 	//find configurations from findManyActionName
-	let paginationSettings = {
+	$: paginationSettings = {
 		offset: Number($page.url.searchParams.get('page') ?? 1),
 		limit: Number($page.url.searchParams.get('limit') ?? PUBLIC_DEFAULT_LIMIT),
 		size: totalItems,
