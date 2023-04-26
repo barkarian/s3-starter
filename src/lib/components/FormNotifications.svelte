@@ -9,11 +9,6 @@
 		message: 'Search by filters ...',
 		timeout: 3000
 	};
-	//Handle submit
-	function handleSubmit() {
-		modalStore.close();
-		toastStore.trigger(t);
-	}
 
 	$: createToastsNotifications(formResult);
 	function createToastsNotifications(formResult: any) {
@@ -27,7 +22,7 @@
 			//form validation error
 			const t: ToastSettings = {
 				message: resultMessage,
-				timeout: 3000
+				background: 'variant-filled-error'
 			};
 			toastStore.trigger(t);
 			// modalStore.close();
@@ -36,10 +31,13 @@
 			//on success we close modal
 			const t: ToastSettings = {
 				message: resultMessage,
-				timeout: 3000
+				timeout: 3000,
+				background: 'variant-filled-success'
 			};
 			toastStore.trigger(t);
 			modalStore.close();
 		}
 	}
 </script>
+
+<div class="variant-filler" />

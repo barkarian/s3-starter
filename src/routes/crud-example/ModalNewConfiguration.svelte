@@ -80,12 +80,6 @@
 					placeholder="Enter phone number..."
 				/>
 			</label>
-			{#if valid && $message}
-				<p>
-					{$message}
-					{$page.status}
-				</p>
-			{/if}
 			<!-- prettier-ignore -->
 			<footer class="modal-footer {parent.regionFooter}">
 			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>{parent.buttonTextCancel}</button>
