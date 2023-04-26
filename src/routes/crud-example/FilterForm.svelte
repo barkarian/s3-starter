@@ -1,5 +1,16 @@
 <script lang="ts">
-	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
+	import {
+		Accordion,
+		AccordionItem,
+		drawerStore,
+		type DrawerSettings
+	} from '@skeletonlabs/skeleton';
+
+	const drawerSettings: DrawerSettings = {
+		id: 'example-2',
+		meta: { foo: 'bar', fizz: 'buzz', age: 40 }
+	};
+	drawerStore.open(drawerSettings);
 </script>
 
 <button type="button" class="btn variant-filled">
