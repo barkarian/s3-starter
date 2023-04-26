@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { modalStore } from '@skeletonlabs/skeleton';
+	import { modalStore, tableSourceMapper } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
 	import CrudElement from './ModalRUDElement.svelte';
+	import type { PageData } from './$types';
 
+	export let data: PageData;
 	export let items: any[];
 
 	let selection: any | null = null;
@@ -16,7 +18,7 @@
 		// The data visibly shown in your table body UI.
 		body: tableMapperValues(items, ['email', 'firstName', 'lastName']),
 		// Optional: The data returned when interactive is enabled and a row is clicked.
-		meta: tableMapperValues(items, [
+		meta: tableSourceMapper(items, [
 			'id',
 			'email',
 			'firstName',
@@ -36,7 +38,7 @@
 			// Pass a reference to your custom component
 			ref: CrudElement,
 			// Add the component properties as key/value pairs
-			props: { selection: selection },
+			props: { selection: selection, data: data },
 			// Provide a template literal for the default component slot
 			slot: '<p>Skeleton</p>'
 		};

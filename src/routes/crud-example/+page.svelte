@@ -70,6 +70,6 @@
 </button>
 <ShowFilters {filters} />
 <!-- Configuration Lists -->
-<ConfigurationList items={data.configurationData?.data ?? []} />
+<ConfigurationList {data} items={data.configurationData?.data ?? []} />
 <!-- Pagination -->
 <Pagination totalItems={data.configurationData?.pagination?.totalCount ?? 0} />

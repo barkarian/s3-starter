@@ -45,15 +45,16 @@ export const createFormSchema = z.object({
 // Define Update Schema
 export const updateFormSchema = z.object({
 	id: z.number().int(),
-	firstName: z.string().optional(),
-	lastName: z.string().optional(),
-	phone: z.string().optional(),
+	firstName: z.string().min(1).optional(),
+	lastName: z.string().min(1).optional(),
+	email: z.string().min(1).optional(),
+	phone: z.string().min(1).optional(),
 	userApproved: z.boolean().optional()
 });
 
 // Define Remove Schema
-export const removeFormSchema = z.object({
-	email: z.string()
+export const deleteFormSchema = z.object({
+	id: z.number().int()
 });
 
 //FiltersQueryParams  - Must have only strings!
@@ -186,7 +187,7 @@ export async function findConfigurations(
 
 export async function deleteConfiguration(event: RequestEvent): Promise<GuiData<User>> {
 	//VALIDATE FORM
-	const form = await superValidate(event, removeFormSchema);
+	const form = await superValidate(event, deleteFormSchema);
 	if (!form.valid) {
 		return {
 			form,
@@ -198,7 +199,7 @@ export async function deleteConfiguration(event: RequestEvent): Promise<GuiData<
 	}
 	//FORM TO DTOS
 	const configurationId: Prisma.UserWhereUniqueInput = {
-		email: form.data.email
+		id: form.data.id
 	};
 	//API LAYER
 	try {
@@ -236,14 +237,18 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 	const configurationUpdate: Prisma.UserUpdateInput = {
 		firstName: form.data.firstName,
 		lastName: form.data.lastName,
-		phone: form.data.phone
+		phone: form.data.phone,
+		email: form.data.email,
+		userApproved: form.data.userApproved
 	};
+	console.log({ configurationUpdate });
 	//API LAYER
 	try {
 		const updatedUser: User = await prismaClient.user.update({
 			where: configurationId,
 			data: configurationUpdate
 		});
+		console.log(updatedUser);
 		return { data: updatedUser, form };
 	} catch (e) {
 		return {

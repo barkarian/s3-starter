@@ -6,7 +6,7 @@ import {
 	createFormSchema,
 	deleteConfiguration,
 	findConfigurations,
-	removeFormSchema,
+	deleteFormSchema,
 	updateConfiguration,
 	updateFormSchema
 } from './Service';
@@ -17,10 +17,10 @@ import { PUBLIC_DEFAULT_LIMIT, PUBLIC_INVALID_FORM_STATUS } from '$env/static/pu
 export const load: PageServerLoad = async (event) => {
 	console.log('load is running again:' + event.url);
 	// Server API:
-	const [createForm, updateForm, removeForm] = await Promise.all([
+	const [createForm, updateForm, deleteForm] = await Promise.all([
 		superValidate(event, createFormSchema),
 		superValidate(event, updateFormSchema),
-		superValidate(event, removeFormSchema)
+		superValidate(event, deleteFormSchema)
 	]);
 
 	// Always return { form } in load and form actions.
@@ -39,7 +39,7 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		createForm,
 		updateForm,
-		removeForm,
+		deleteForm,
 		updateFormAction,
 		removeFormAction,
 		createFormAction,
@@ -79,7 +79,10 @@ export const actions: Actions = {
 		}
 
 		// Yep, return { form } here too
-		return { form };
+		return message(form, 'Successfully updated', {
+			status: 200,
+			valid: true
+		});
 	},
 	delete: async (event) => {
 		const { data, error, form } = await deleteConfiguration(event);
@@ -93,6 +96,9 @@ export const actions: Actions = {
 		}
 
 		// Yep, return { form } here too
-		return { form };
+		return message(form, 'Successfully deleted', {
+			status: 200,
+			valid: true
+		});
 	}
 };
