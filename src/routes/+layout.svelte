@@ -5,10 +5,21 @@
 	import '@skeletonlabs/skeleton/styles/all.css';
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
-	import { AppShell, AppBar, Modal, Drawer, drawerStore } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, Modal, Drawer, drawerStore, Avatar } from '@skeletonlabs/skeleton';
 	import Navigation from '$lib/components/Navigation.svelte';
+	import { goto } from '$app/navigation';
+	export let data;
+	console.log({ layoutData: data.session?.user });
 	function drawerOpen(): void {
 		drawerStore.open();
+	}
+	function getInitialOfName(name: string): string {
+		let initials = '';
+		const nameArray = name.split(' ');
+		for (let i = 0; i < nameArray.length; i++) {
+			initials += nameArray[i][0];
+		}
+		return initials;
 	}
 </script>
 
@@ -34,7 +45,18 @@
 				<strong class="text-xl uppercase">Skeleton</strong>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<a class="btn btn-sm variant-ghost-surface" href="/auth" rel="noreferrer"> Sign In </a>
+				{#if !data.session?.user}
+					<a class="btn btn-sm variant-ghost-surface" href="/auth" rel="noreferrer"> Sign In </a>
+				{:else}
+					<Avatar
+						border="border-4 	border-surface-300-600-token hover:!border-primary-500"
+						cursor="cursor-pointer"
+						initials={getInitialOfName(data.session.user.name ?? 'USE R')}
+						width="w-14"
+						background="bg-primary-500"
+						on:click={() => goto('/auth/profile')}
+					/>
+				{/if}
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
