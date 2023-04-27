@@ -2,7 +2,7 @@
 	import { modalStore, tableSourceMapper } from '@skeletonlabs/skeleton';
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
-	import CrudElement from './ModalRUDElement.svelte';
+	import ModalRUD from './ModalRUD.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -36,7 +36,7 @@
 	function createModal(): ModalSettings {
 		const modalComponent: ModalComponent = {
 			// Pass a reference to your custom component
-			ref: CrudElement,
+			ref: ModalRUD,
 			// Add the component properties as key/value pairs
 			props: { selection: selection, data: data },
 			// Provide a template literal for the default component slot

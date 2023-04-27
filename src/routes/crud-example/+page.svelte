@@ -1,10 +1,9 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
-	import FilterForm from './ModalFilters.svelte';
 	import ConfigurationList from './ConfigurationList.svelte';
 	import { modalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
-	import FiltersModal from './ModalFilters.svelte';
-	import NewConfigurationModal from './ModalNewConfiguration.svelte';
+	import ModalFilters from './ModalFilters.svelte';
+	import ModalCreate from './ModalCreate.svelte';
 	import type { FiltersQueryParams } from './Service';
 	import { page } from '$app/stores';
 	import ShowFilters from '$lib/components/crud-utils/ShowFilters.svelte';
@@ -20,7 +19,7 @@
 	function filtersModal(): ModalSettings {
 		const modalComponent: ModalComponent = {
 			// Pass a reference to your custom component
-			ref: FiltersModal,
+			ref: ModalFilters,
 			props: { filters: filters },
 			// Provide a template literal for the default component slot
 			slot: '<p>Skeleton</p>'
@@ -37,7 +36,7 @@
 	function newConfigurationModal(): ModalSettings {
 		const modalComponent: ModalComponent = {
 			// Pass a reference to your custom component
-			ref: NewConfigurationModal,
+			ref: ModalCreate,
 			props: { data: data }
 			// Provide a template literal for the default component slot
 		};
@@ -69,7 +68,7 @@
 	<span>Add Configuration</span>
 </button>
 <ShowFilters {filters} />
-<!-- Configuration Lists -->
+<!-- Configuration Lists data is needed in order to pass superFormData to ModalRUD-->
 <ConfigurationList {data} items={data.configurationData?.data ?? []} />
 <!-- Pagination -->
 <Pagination totalItems={data.configurationData?.pagination?.totalCount ?? 0} />
