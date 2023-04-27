@@ -74,7 +74,5 @@
 		<Navigation />
 	</svelte:fragment>
 	<!-- Page Route Content -->
-	<div class="container p-10 mx-auto">
-		<slot />
-	</div>
+	<slot />
 </AppShell>

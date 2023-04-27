@@ -14,7 +14,7 @@
 	//Table Settings
 	$: tableSimple = {
 		// A list of heading labels.
-		head: ['Name', 'Symbol', 'Weight'],
+		head: ['Email', 'Name', 'Surname'],
 		// The data visibly shown in your table body UI.
 		body: tableMapperValues(items, ['email', 'firstName', 'lastName']),
 		// Optional: The data returned when interactive is enabled and a row is clicked.
