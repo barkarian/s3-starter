@@ -5,7 +5,6 @@ import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import type { User } from '@prisma/client';
 import type { Prisma } from '@prisma/client';
 import { prismaClient } from '$lib/server/prismaClient';
-import { PUBLIC_INVALID_FORM_STATUS } from '$env/static/public';
 
 //Configuration Types
 export type GuiData<T> = {
@@ -123,7 +122,7 @@ export async function deleteConfiguration(event: RequestEvent): Promise<GuiData<
 			form,
 			error: {
 				message: 'Form is not valid',
-				status: Number(PUBLIC_INVALID_FORM_STATUS)
+				status: 400
 			}
 		};
 	}
@@ -156,7 +155,7 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 			form,
 			error: {
 				message: 'Form is not valid',
-				status: Number(PUBLIC_INVALID_FORM_STATUS)
+				status: 400
 			}
 		};
 	}
@@ -197,7 +196,7 @@ export async function createConfiguration(event: RequestEvent): Promise<GuiData<
 			form,
 			error: {
 				message: 'Form is not valid',
-				status: Number(PUBLIC_INVALID_FORM_STATUS)
+				status: 400
 			}
 		};
 	}

@@ -10,7 +10,7 @@ import {
 	updateConfiguration,
 	updateFormSchema
 } from './Service';
-import { PUBLIC_DEFAULT_LIMIT, PUBLIC_INVALID_FORM_STATUS } from '$env/static/public';
+import { PUBLIC_DEFAULT_LIMIT } from '$env/static/public';
 
 //Configuration Types
 //LOADING DATA----------------------------------------------------------------------
@@ -29,7 +29,7 @@ export const load: PageServerLoad = async (event) => {
 
 	let guiPaginationData = await findConfigurations(limit, page, event);
 	if (guiPaginationData.error) {
-		return fail(400, { error: guiPaginationData.error, createForm, configurationData: [] });
+		return fail(404, { error: guiPaginationData.error, createForm, configurationData: [] });
 	}
 	//TODO add error handling here
 	return {
@@ -44,12 +44,12 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
 	create: async (event) => {
 		const { data, error, form } = await createConfiguration(event);
-		if (error?.status == Number(PUBLIC_INVALID_FORM_STATUS)) {
+		if (error?.status == 400) {
 			return fail(400, { form: form });
 		}
 		if (data == null || error != null) {
 			return message(form, error?.message, {
-				status: error?.status || Number(PUBLIC_INVALID_FORM_STATUS)
+				status: error?.status || 404
 			});
 		}
 
@@ -62,12 +62,12 @@ export const actions: Actions = {
 	},
 	update: async (event) => {
 		const { data, error, form } = await updateConfiguration(event);
-		if (error?.status == Number(PUBLIC_INVALID_FORM_STATUS)) {
+		if (error?.status == 400) {
 			return fail(400, { form: form });
 		}
 		if (data == null || error != null) {
 			return message(form, error?.message, {
-				status: error?.status || Number(PUBLIC_INVALID_FORM_STATUS)
+				status: error?.status || 404
 			});
 		}
 
@@ -79,14 +79,12 @@ export const actions: Actions = {
 	},
 	delete: async (event) => {
 		const { data, error, form } = await deleteConfiguration(event);
-		if (error?.status == Number(PUBLIC_INVALID_FORM_STATUS)) {
-			return message(form, error?.message, {
-				status: error?.status || Number(PUBLIC_INVALID_FORM_STATUS)
-			});
+		if (error?.status == 400) {
+			return fail(400, { form: form });
 		}
 		if (data == null || error != null) {
 			return message(form, error?.message, {
-				status: error?.status || Number(PUBLIC_INVALID_FORM_STATUS)
+				status: error?.status || 404
 			});
 		}
 
