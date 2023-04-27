@@ -145,9 +145,12 @@
 					placeholder="Enter phone number..."
 				/>
 			</label>
-			{selectUserApproved}
-			{$updateForm.userApproved}
-			<input bind:checked={$updateForm.userApproved} type="checkbox" name="userApproved" />
+			<input
+				class="hidden"
+				bind:checked={$updateForm.userApproved}
+				type="checkbox"
+				name="userApproved"
+			/>
 			<label class="label">
 				<span>User status</span>
 				<select
