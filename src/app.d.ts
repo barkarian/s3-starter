@@ -21,7 +21,14 @@ export type Session = {
 		email: string;
 		image?: string;
 		roles: string[];
-		meta?: any;
+		meta?: UserMeta;
 	};
 	expires: string;
 } | null;
+
+export type UserMeta = {
+	signUpDate: Date;
+	chanelManager: Date;
+	balance: number;
+	freePlan: boolean;
+};

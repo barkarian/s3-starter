@@ -11,12 +11,19 @@ datasource db {
 model User {
   id           Int        @id @default(autoincrement())
   email        String     @unique //updateable and creatable by gui
+  roles        UserRole[]
   firstName    String? //updateable and creatable by gui
   lastName     String? //updateable and creatable by gui
   phone        String? //updateable and creatable by gui
   totalRevenue Float      @default(0) //updateable and creatable by gui
   userApproved Boolean    @default(false) //updateable and creatable by gui
   properties   Property[]
+}
+
+model UserRole {
+  userId Int    @id
+  role   String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Property {
