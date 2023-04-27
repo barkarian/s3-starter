@@ -7,7 +7,7 @@
 	import NewConfigurationModal from './ModalNewConfiguration.svelte';
 	import type { FiltersQueryParams } from './Service';
 	import { page } from '$app/stores';
-	import ShowFilters from '$lib/components/ShowFilters.svelte';
+	import ShowFilters from '$lib/components/crud-utils/ShowFilters.svelte';
 
 	export let data;
 	//Create Modals

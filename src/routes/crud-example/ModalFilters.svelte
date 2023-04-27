@@ -2,7 +2,7 @@
 	import { modalStore, toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import type { FiltersQueryParams } from './Service';
 	import { page } from '$app/stores';
-	import HiddenFormInputPaginatorSettings from '$lib/components/HiddenFormInputPaginatorSettings.svelte';
+	import HiddenFormInputPaginatorSettings from '$lib/components/crud-utils/HiddenFormInputPaginatorSettings.svelte';
 	export let parent: any;
 
 	//find configurations from findManyActionName

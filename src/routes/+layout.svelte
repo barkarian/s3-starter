@@ -14,7 +14,7 @@
 		Avatar,
 		Toast
 	} from '@skeletonlabs/skeleton';
-	import Navigation from '$lib/components/Navigation.svelte';
+	import Navigation from './Navigation.svelte';
 	import { goto } from '$app/navigation';
 	export let data;
 	console.log({ layoutData: data.session?.user });

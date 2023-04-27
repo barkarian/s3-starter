@@ -4,7 +4,7 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
-	import FormNotifications from '$lib/components/FormNotifications.svelte';
+	import FormNotifications from '$lib/components/crud-utils/FormNotifications.svelte';
 	import type { User } from '@prisma/client';
 	export let parent: any;
 	export let selection: User;

@@ -8,7 +8,6 @@ import type { Session } from './app';
 
 export const handle: Handle = sequence(
 	SvelteKitAuth(async (event) => {
-		// const authOptions: SvelteKitAuthConfig
 		const authOptions: SvelteKitAuthConfig = {
 			providers: [
 				//@ts-ignore
@@ -46,9 +45,6 @@ export const handle: Handle = sequence(
 							token['meta'] = userFromDb['meta'];
 						}
 					}
-					// console.log({
-					// 	msg: 'Inside jwt callback',
-					// });
 					return token;
 				},
 				session(sessionCallbackParams: any) {
@@ -57,9 +53,6 @@ export const handle: Handle = sequence(
 						session.user['roles'] = token['roles'];
 						session.user['meta'] = token['meta'];
 					}
-					// console.log({
-					// 	msg: 'Inside session callback',
-					// });
 					return session;
 				}
 			},
@@ -73,7 +66,6 @@ export const handle: Handle = sequence(
 
 async function authorization(handleInput: any) {
 	const { event, resolve } = handleInput;
-	// Protect any routes under /authenticated
 	const session: Session = await event.locals.getSession();
 
 	// //In case of new user
@@ -88,7 +80,5 @@ async function authorization(handleInput: any) {
 
 	// If the request is still here, just proceed as normally
 	event.locals.session = session;
-	// console.log({ authorizationSession: await event.locals.getSession() });
-
 	return resolve(event);
 }
