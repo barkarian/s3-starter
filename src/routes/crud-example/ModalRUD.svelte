@@ -45,9 +45,9 @@
 	$: onSelectionChange(selection);
 	function onSelectionChange(selection: User) {
 		$updateForm.email = selection.email;
-		$updateForm.firstName = selection.firstName ?? undefined;
-		$updateForm.lastName = selection.lastName ?? undefined;
-		$updateForm.phone = selection.phone ?? undefined;
+		$updateForm.firstName = selection.firstName ?? '';
+		$updateForm.lastName = selection.lastName ?? '';
+		$updateForm.phone = selection.phone ?? '';
 		$updateForm.userApproved = selection.userApproved;
 		selectUserApproved = $updateForm.userApproved === true ? 'approved' : 'non-approved';
 	}
@@ -74,9 +74,7 @@
 		</article>
 		<form method="POST" action="{$page.route.id}?/delete" use:deleteEnhance>
 			<input class="hidden" type="text" name="id" bind:value={selection.id} />
-			<button formaction="{$page.route.id}?/delete" class="btn {parent.buttonPositive}"
-				>Delete</button
-			>
+			<button formaction="{$page.route.id}?/delete" class="btn variant-filled-error">Delete</button>
 		</form>
 		<!-- Enable for debugging: -->
 		<!-- <pre>{JSON.stringify(formData, null, 2)}</pre> -->
@@ -167,7 +165,7 @@
 			<!-- prettier-ignore -->
 			<footer class="modal-footer {parent.regionFooter}">
 			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>{parent.buttonTextCancel}</button>
-			<button type="submit" class="btn {parent.buttonPositive}" on:click={handleSubmit}>Update</button>
+			<button type="submit" class="btn variant-filled-secondary" on:click={handleSubmit}>Update</button>
 			</footer>
 		</form>
 	</div>

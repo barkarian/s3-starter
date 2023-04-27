@@ -19,8 +19,7 @@ export type GuiData<T> = {
 //Configuration Types
 export type GuiPaginationData<T> = {
 	data: T;
-	//Pagination or Error
-	pagination?: {
+	pagination: {
 		limit: number;
 		page: number;
 		totalCount: number;
@@ -43,10 +42,10 @@ export const createFormSchema = z.object({
 // Define Update Schema
 export const updateFormSchema = z.object({
 	id: z.number().int(),
-	firstName: z.string().min(1).optional(),
-	lastName: z.string().min(1).optional(),
-	email: z.string().min(1).optional(),
-	phone: z.string().min(1).optional(),
+	email: z.string().min(1),
+	firstName: z.string().min(1),
+	lastName: z.string().min(1),
+	phone: z.string().min(1),
 	userApproved: z.boolean().optional().default(false)
 });
 
@@ -106,6 +105,11 @@ export async function findConfigurations(
 	} catch (e) {
 		return {
 			data: [],
+			pagination: {
+				limit,
+				page,
+				totalCount: 0
+			},
 			error: {
 				message: 'Something went wrong while loading data ' + e,
 				status: 404

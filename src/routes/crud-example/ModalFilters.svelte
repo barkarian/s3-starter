@@ -12,13 +12,13 @@
 	const cHeader = 'text-2xl font-bold';
 	const cForm = 'border border-surface-500 p-4 space-y-4 rounded-container-token';
 
-	//TOAST MESSAGE
-	const t: ToastSettings = {
-		message: 'Search by filters ...',
-		timeout: 3000
-	};
 	//Handle submit
 	function handleSubmit() {
+		const t: ToastSettings = {
+			message: 'Search by filters ...',
+			timeout: 3000,
+			background: 'variant-filled-success'
+		};
 		modalStore.close();
 		toastStore.trigger(t);
 	}
