@@ -23,26 +23,19 @@ export const load: PageServerLoad = async (event) => {
 		superValidate(event, deleteFormSchema)
 	]);
 
-	// Always return { form } in load and form actions.
-	const updateFormAction = 'update';
-	const removeFormAction = 'delete';
-	const createFormAction = 'create';
 	//On search configuration Filter must be empty
 	const limit = Number(event.url.searchParams.get('limit') ?? PUBLIC_DEFAULT_LIMIT);
 	const page = Number(event.url.searchParams.get('page') ?? 0);
 
 	let guiPaginationData = await findConfigurations(limit, page, event);
 	if (guiPaginationData.error) {
-		return fail(400, { error: guiPaginationData.error });
+		return fail(400, { error: guiPaginationData.error, createForm, configurationData: [] });
 	}
 	//TODO add error handling here
 	return {
 		createForm,
 		updateForm,
 		deleteForm,
-		updateFormAction,
-		removeFormAction,
-		createFormAction,
 		configurationData: guiPaginationData
 	};
 };
@@ -87,7 +80,9 @@ export const actions: Actions = {
 	delete: async (event) => {
 		const { data, error, form } = await deleteConfiguration(event);
 		if (error?.status == Number(PUBLIC_INVALID_FORM_STATUS)) {
-			return fail(400, { form: form });
+			return message(form, error?.message, {
+				status: error?.status || Number(PUBLIC_INVALID_FORM_STATUS)
+			});
 		}
 		if (data == null || error != null) {
 			return message(form, error?.message, {

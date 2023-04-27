@@ -5,7 +5,6 @@ import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import type { User } from '@prisma/client';
 import type { Prisma } from '@prisma/client';
 import { prismaClient } from '$lib/server/prismaClient';
-import { queryStringToObjectOfStrings } from '$lib/server/MapQueryAndObject';
 import { PUBLIC_INVALID_FORM_STATUS } from '$env/static/public';
 
 //Configuration Types
@@ -57,99 +56,30 @@ export const deleteFormSchema = z.object({
 	id: z.number().int()
 });
 
-//FiltersQueryParams  - Must have only strings!
+//FiltersQueryParams  only for reference in the frontend
 export type FiltersQueryParams = {
-	id?: string;
 	email?: string;
 	firstName?: string;
 	lastName?: string;
-	phone?: string;
-	totalRevenueUpperLimit?: string;
-	totalRevenueLowerLimit?: string;
-	userApproved?: string;
 };
-//FiltersQueryParams sample
-const sampleFiltersQueryParams = {
-	id: '1',
-	email: '1',
-	firstName: '1',
-	lastName: '1',
-	phone: '1',
-	totalRevenueUpperLimit: '1',
-	totalRevenueLowerLimit: '1',
-	userApproved: '1'
-};
-
-//FiltersQueryParams  - Must have only strings!
-function constructFilterObject(filterFields: FiltersQueryParams): Prisma.UserWhereInput {
-	try {
-		const filter: Prisma.UserWhereInput = {};
-		filter.totalRevenue = {};
-
-		if (filterFields.totalRevenueUpperLimit) {
-			const floatValue = parseFloat(filterFields.totalRevenueUpperLimit);
-			filter.totalRevenue = {
-				...filter.totalRevenue,
-				lt: floatValue
-			};
-		}
-
-		if (filterFields.totalRevenueLowerLimit) {
-			const floatValue = parseFloat(filterFields.totalRevenueLowerLimit);
-			filter.totalRevenue = {
-				...filter.totalRevenue,
-				gt: floatValue
-			};
-		}
-
-		if (filterFields.email) {
-			filter.email = {
-				contains: filterFields.email
-			};
-		}
-
-		if (filterFields.firstName) {
-			filter.firstName = {
-				contains: filterFields.firstName
-			};
-		}
-
-		if (filterFields.lastName) {
-			filter.lastName = {
-				contains: filterFields.lastName
-			};
-		}
-
-		if (filterFields.phone) {
-			filter.phone = {
-				contains: filterFields.phone
-				// mode: 'insensitive'
-			};
-		}
-
-		if (filterFields.userApproved) {
-			filter.userApproved = {
-				equals: filterFields.userApproved === 'true'
-			};
-		}
-		return filter;
-	} catch (e) {
-		throw "Couldn't construct Prisma Filter";
-	}
-}
 
 export async function findConfigurations(
 	limit: number,
 	page: number,
 	event: ServerLoadEvent
 ): Promise<GuiPaginationData<User[]>> {
-	//Get valid filter props from queryParams
-	const filterQueryParams: FiltersQueryParams = queryStringToObjectOfStrings<FiltersQueryParams>(
-		sampleFiltersQueryParams,
-		event.url.search
-	);
 	//Construct filter Object
-	const filter: Prisma.UserWhereInput = constructFilterObject(filterQueryParams);
+	const filter: Prisma.UserWhereInput = {
+		firstName: {
+			contains: event.url.searchParams.get('firstName') ?? undefined
+		},
+		lastName: {
+			contains: event.url.searchParams.get('lastName') ?? undefined
+		},
+		email: {
+			contains: event.url.searchParams.get('email') ?? undefined
+		}
+	};
 	//API LAYER
 	try {
 		const users: User[] = await prismaClient.user.findMany({
@@ -230,7 +160,6 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 			}
 		};
 	}
-	console.log(form.data);
 	//FORM TO DTOS
 	const configurationId: Prisma.UserWhereUniqueInput = {
 		id: form.data.id
