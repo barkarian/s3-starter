@@ -26,6 +26,7 @@ model UserRole {
   user   User   @relation(fields: [userId], references: [id])
 }
 
+
 model Property {
   id                     Int     @id @default(autoincrement())
   ownerId                Int

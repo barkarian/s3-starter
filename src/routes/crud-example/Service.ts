@@ -80,20 +80,13 @@ export async function findConfigurations(
 	};
 	//API LAYER
 	try {
-		const users: User[] = await prismaClient.user.findMany({
+		const users = await prismaClient.user.findMany({
+			include: { roles: true },
 			where: filter,
 			skip: page * limit,
-			take: limit,
-			select: {
-				id: true,
-				email: true,
-				firstName: true,
-				lastName: true,
-				phone: true,
-				totalRevenue: true,
-				userApproved: true
-			}
+			take: limit
 		});
+		users.forEach((u) => console.log(u.roles));
 		return {
 			data: users,
 			pagination: {
