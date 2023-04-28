@@ -4,7 +4,8 @@ import { redirect, type Handle } from '@sveltejs/kit';
 import { PUBLIC_GOOGLE_ID } from '$env/static/public';
 import { SECRET_ADMIN_EMAIL, SECRET_AUTH_SECRET, SECRET_GOOGLE_SECRET } from '$env/static/private';
 import { sequence } from '@sveltejs/kit/hooks';
-import type { Session } from './app';
+import type { Session, UserMeta } from './app';
+import { prismaClient } from '$lib/server/prismaClient';
 
 export const handle: Handle = sequence(
 	SvelteKitAuth(async (event) => {
@@ -19,32 +20,34 @@ export const handle: Handle = sequence(
 					const { token, user } = jwtCallbackParams;
 					//When we got a user we check his email retrieve his data from the database and create his token
 					if (user) {
-						console.log({ user });
+						console.log({ id: user.id });
 						//Get user from the database and user roles and meta
-						//TODO...
-						//Dummy user retrieved
-						const userFromDb = {
-							userEmail: 'thodorisbarkas@gmail.com',
-							roles: ['new-user'],
-							meta: {
-								name: 'aaa',
-								surname: 'aaaaaaa'
+						const userFromDb = await prismaClient.user.findFirst({
+							include: { roles: true },
+							where: {
+								id: user.id
 							}
-						};
-
-						if (!userFromDb) {
-							//!!!
-							//If the user is not existing we don't have to add a new-user to the database
-							//A good practive for my case is to ask the user for any of your application specific user related data first
-							//After that you can insert him in the database and refresh his token
+						});
+						console.log({ user, userFromDb });
+						//If there's not a user in the database
+						if (!userFromDb && user?.email === SECRET_ADMIN_EMAIL) {
+							token['roles'] = ['admin'];
+							token['meta'] = undefined;
+						} else if (!userFromDb) {
 							token['roles'] = ['new-user'];
 							token['meta'] = undefined;
-						} else if (user?.email === SECRET_ADMIN_EMAIL) {
-							token['roles'] = ['admin'];
-							token['meta'] = {};
-						} else {
+						}
+						//If there's a user in the database ADD-YOUR-BUSINESS LOGIC HERE
+						if (userFromDb) {
+							//Construct META DATA
+							const userMeta: UserMeta = {
+								firstName: userFromDb.firstName,
+								lastName: userFromDb.lastName,
+								phone: userFromDb.phone,
+								userApproved: userFromDb.userApproved
+							};
 							token['roles'] = userFromDb['roles'];
-							token['meta'] = userFromDb['meta'];
+							token['meta'] = userMeta;
 						}
 					}
 					return token;

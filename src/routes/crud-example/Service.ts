@@ -41,7 +41,7 @@ export const createFormSchema = z.object({
 
 // Define Update Schema
 export const updateFormSchema = z.object({
-	id: z.number().int(),
+	id: z.string(),
 	email: z.string().min(1),
 	firstName: z.string().min(1),
 	lastName: z.string().min(1),
@@ -51,7 +51,7 @@ export const updateFormSchema = z.object({
 
 // Define Remove Schema
 export const deleteFormSchema = z.object({
-	id: z.number().int()
+	id: z.string()
 });
 
 //FiltersQueryParams  only for reference in the frontend
@@ -86,7 +86,7 @@ export async function findConfigurations(
 			skip: page * limit,
 			take: limit
 		});
-		users.forEach((u) => console.log(u.roles));
+		// users.forEach((u) => console.log(u.roles));
 		return {
 			data: users,
 			pagination: {
@@ -127,8 +127,14 @@ export async function deleteConfiguration(event: RequestEvent): Promise<GuiData<
 	const configurationId: Prisma.UserWhereUniqueInput = {
 		id: form.data.id
 	};
+	const roleConfigurationIds: Prisma.UserRoleWhereInput = {
+		userId: form.data.id
+	};
 	//API LAYER
 	try {
+		await prismaClient.userRole.deleteMany({
+			where: roleConfigurationIds
+		});
 		const deletedUser: User = await prismaClient.user.delete({
 			where: configurationId
 		});

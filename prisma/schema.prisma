@@ -9,27 +9,26 @@ datasource db {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
+  id           String     @id @default(uuid())
   email        String     @unique //updateable and creatable by gui
   roles        UserRole[]
-  firstName    String? //updateable and creatable by gui
-  lastName     String? //updateable and creatable by gui
-  phone        String? //updateable and creatable by gui
+  firstName    String //updateable and creatable by gui
+  lastName     String //updateable and creatable by gui
+  phone        String //updateable and creatable by gui
   totalRevenue Float      @default(0) //updateable and creatable by gui
   userApproved Boolean    @default(false) //updateable and creatable by gui
   properties   Property[]
 }
 
 model UserRole {
-  userId Int    @id
+  userId String @id
   role   String
   user   User   @relation(fields: [userId], references: [id])
 }
 
-
 model Property {
   id                     Int     @id @default(autoincrement())
-  ownerId                Int
+  ownerId                String
   chatGptIntegrationPlan Boolean @default(false)
   FullyManagedPlan       Boolean @default(false)
   totalRevenue           Float   @default(0)

@@ -27,8 +27,8 @@ export type Session = {
 } | null;
 
 export type UserMeta = {
-	signUpDate: Date;
-	chanelManager: Date;
-	balance: number;
-	freePlan: boolean;
+	firstName: string;
+	lastName: string;
+	phone: string;
+	userApproved: boolean;
 };
