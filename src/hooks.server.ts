@@ -46,7 +46,7 @@ export const handle: Handle = sequence(
 								phone: userFromDb.phone,
 								userApproved: userFromDb.userApproved
 							};
-							token['roles'] = userFromDb['roles'];
+							token['roles'] = userFromDb.roles.map((role) => role.role);
 							token['meta'] = userMeta;
 						}
 					}

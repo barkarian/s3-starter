@@ -7,9 +7,10 @@ async function main() {
 	await prisma.user.deleteMany();
 	const users = [
 		{
-			email: 'john@example.com',
-			firstName: 'John',
-			lastName: 'Doe',
+			id: '109616639742759650534',
+			email: 'giorgos.gamatos90@gmail.com',
+			firstName: 'Giorgos',
+			lastName: 'Gamatos',
 			phone: '+1-555-555-1234',
 			totalRevenue: 1000.0,
 			userApproved: true
