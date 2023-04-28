@@ -1,7 +1,7 @@
 import type { Prisma, UserRole } from '@prisma/client';
 import { prismaClient as prisma } from '$lib/server/prismaClient';
+import { redirect, type RequestEvent } from '@sveltejs/kit';
 
-// 2. Function to add one or more roles to a user (without duplicates)
 export async function addUserRoles(userId: string, newRoles: string[]): Promise<void> {
 	const user = await prisma.user.findUnique({
 		include: { roles: true },
@@ -20,7 +20,6 @@ export async function addUserRoles(userId: string, newRoles: string[]): Promise<
 	});
 }
 
-// 3. Function to remove one or more roles from a user
 export async function removeUserRoles(userId: string, rolesToRemove: string[]): Promise<void> {
 	await prisma.userRole.deleteMany({
 		where: {
@@ -43,4 +42,18 @@ export async function getUserRoles(userId: string): Promise<string[]> {
 	}
 
 	return user.roles.map((userRole: UserRole) => userRole.role);
+}
+
+export function hasAllRoles(userRoles: string[], requiredRoles: string[]) {
+	return requiredRoles.every((role) => userRoles.includes(role));
+}
+
+export async function revalidateTokenAndCheckUserHasAllRoles(
+	event: RequestEvent,
+	requiredRoles: string[]
+) {
+	await event.locals.getSession();
+	if (!event.locals.session || !event.locals.session.user) throw redirect(303, '/auth');
+	const userRoles = event.locals.session.user.roles;
+	return requiredRoles.every((role) => userRoles.includes(role));
 }
