@@ -1,3 +1,4 @@
+import { hasAllRoles } from '$lib/database/auth/authRoles';
 import { UserRoleEnum, userEnumToString } from '$lib/database/auth/userData.type';
 import { getSessionWithRolesAndMeta } from '$lib/server/GetSession';
 import type { PageServerLoad } from './$types';
@@ -8,7 +9,7 @@ export const load: PageServerLoad = async (event) => {
 	if (!session || !session.user) {
 		throw redirect(303, '/auth');
 	}
-	if (session.user.roles.includes(userEnumToString[UserRoleEnum.NEW_USER])) {
+	if (hasAllRoles(session.user.roles, [UserRoleEnum.NEW_USER])) {
 		throw redirect(303, '/auth/new-user');
 	}
 	if (session?.user && session.user.roles) {
