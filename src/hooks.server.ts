@@ -6,6 +6,7 @@ import { SECRET_ADMIN_EMAIL, SECRET_AUTH_SECRET, SECRET_GOOGLE_SECRET } from '$e
 import { sequence } from '@sveltejs/kit/hooks';
 import type { Session, UserMeta } from './app';
 import { prismaClient } from '$lib/server/prismaClient';
+import { UserRoleEnum, userEnumToString } from '$lib/database/auth/userData.type';
 
 export const handle: Handle = sequence(
 	SvelteKitAuth(async (event) => {
@@ -31,10 +32,10 @@ export const handle: Handle = sequence(
 						console.log({ user, userFromDb });
 						//If there's not a user in the database
 						if (!userFromDb && user?.email === SECRET_ADMIN_EMAIL) {
-							token['roles'] = ['admin'];
+							token['roles'] = [userEnumToString[UserRoleEnum.ADMIN]];
 							token['meta'] = undefined;
 						} else if (!userFromDb) {
-							token['roles'] = ['new-user'];
+							token['roles'] = [userEnumToString[UserRoleEnum.NEW_USER]];
 							token['meta'] = undefined;
 						}
 						//If there's a user in the database ADD-YOUR-BUSINESS LOGIC HERE
@@ -78,7 +79,7 @@ async function authorization(handleInput: any) {
 		if (!session || !session.user) {
 			throw redirect(303, '/auth');
 		}
-		if (!session.user['roles'].includes('admin')) {
+		if (!session.user['roles'].includes(userEnumToString[UserRoleEnum.ADMIN])) {
 			throw redirect(303, '/auth');
 		}
 	}
