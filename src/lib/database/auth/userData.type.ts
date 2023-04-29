@@ -3,9 +3,3 @@ export enum UserRoleEnum {
 	NEW_USER = 'new-user',
 	USER = 'user'
 }
-
-export const userEnumToString = {
-	[UserRoleEnum.ADMIN]: 'admin',
-	[UserRoleEnum.NEW_USER]: 'new-user',
-	[UserRoleEnum.USER]: 'user'
-};

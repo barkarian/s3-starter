@@ -1,6 +1,5 @@
 import { hasAllRoles } from '$lib/database/auth/authRoles';
-import { UserRoleEnum, userEnumToString } from '$lib/database/auth/userData.type';
-import { getSessionWithRolesAndMeta } from '$lib/server/GetSession';
+import { UserRoleEnum } from '$lib/database/auth/userData.type';
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
