@@ -16,9 +16,9 @@ export const handle: Handle = sequence(
 				Google({ clientId: PUBLIC_GOOGLE_ID, clientSecret: SECRET_GOOGLE_SECRET })
 			],
 			callbacks: {
-				async jwt(jwtCallbackParams: any) {
-					console.log({ jwtCallbackParams });
-					const { token, user } = jwtCallbackParams;
+				async jwt({ token, user }) {
+					// console.log({ jwtCallbackParams });
+					// const { token, user } = jwtCallbackParams;
 					//When we got a user we check his email retrieve his data from the database and create his token
 					if (user) {
 						console.log({ id: user.id });
@@ -89,17 +89,26 @@ async function authorization(handleInput: any) {
 	return resolve(event);
 }
 
+// type ISODateString = string
+
 // declare module '@auth/core/types' {
 // 	interface Session {
-// 		error?: 'RefreshAccessTokenError';
+// 		user?: {
+// 			name?: string | null
+// 			email?: string | null
+// 			image?: string | null
+// 			roles?:string[]| null
+// 		  }
+// 		  expires: ISODateString
 // 	}
 // }
 
 // declare module '@auth/core/jwt' {
 // 	interface JWT {
-// 		access_token: string;
-// 		expires_at: number;
-// 		refresh_token: string;
-// 		error?: 'RefreshAccessTokenError';
+// 		name?: string | null;
+// 		email?: string | null;
+// 		picture?: string | null;
+// 		sub?: string;
+// 		roles: string[];
 // 	}
 // }
