@@ -32,11 +32,11 @@ export const handle: Handle = sequence(
 						console.log({ user, userFromDb });
 						//If there's not a user in the database
 						if (!userFromDb && user?.email === SECRET_ADMIN_EMAIL) {
-							token['roles'] = [userEnumToString[UserRoleEnum.ADMIN]];
-							token['meta'] = undefined;
+							token.roles = [userEnumToString[UserRoleEnum.ADMIN]];
+							token.meta = undefined;
 						} else if (!userFromDb) {
-							token['roles'] = [userEnumToString[UserRoleEnum.NEW_USER]];
-							token['meta'] = undefined;
+							token.roles = [userEnumToString[UserRoleEnum.NEW_USER]];
+							token.meta = undefined;
 						}
 						//If there's a user in the database ADD-YOUR-BUSINESS LOGIC HERE
 						if (userFromDb) {
@@ -47,8 +47,8 @@ export const handle: Handle = sequence(
 								phone: userFromDb.phone,
 								userApproved: userFromDb.userApproved
 							};
-							token['roles'] = userFromDb.roles.map((role) => role.role);
-							token['meta'] = userMeta;
+							token.roles = userFromDb.roles.map((role) => role.role);
+							token.meta = userMeta;
 						}
 					}
 					return token;
@@ -56,8 +56,8 @@ export const handle: Handle = sequence(
 				session(sessionCallbackParams: any) {
 					const { session, token } = sessionCallbackParams;
 					if (token && session.user) {
-						session.user['roles'] = token['roles'];
-						session.user['meta'] = token['meta'];
+						session.user.roles = token.roles;
+						session.user.meta = token.meta;
 					}
 					return session;
 				}
@@ -79,7 +79,7 @@ async function authorization(handleInput: any) {
 		if (!session || !session.user) {
 			throw redirect(303, '/auth');
 		}
-		if (!session.user['roles'].includes(userEnumToString[UserRoleEnum.ADMIN])) {
+		if (!session.user.roles.includes(userEnumToString[UserRoleEnum.ADMIN])) {
 			throw redirect(303, '/auth');
 		}
 	}
