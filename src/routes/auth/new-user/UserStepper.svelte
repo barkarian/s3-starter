@@ -1,10 +1,22 @@
 <script lang="ts">
 	import { Step, Stepper } from '@skeletonlabs/skeleton';
-	function onCompleteHandler(e: Event): void {
+	let a = 5;
+	let b = 22;
+	let total = 0;
+	async function onCompleteHandler(e: Event): Promise<void> {
 		console.log('event:complete', e);
+		const response = await fetch('/auth/new-user', {
+			method: 'POST',
+			body: JSON.stringify({ a, b }),
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+		total = await response.json();
 	}
 </script>
 
+{total}
 <Stepper on:complete={onCompleteHandler}>
 	<Step>
 		<svelte:fragment slot="header">The user is authorized!</svelte:fragment>
