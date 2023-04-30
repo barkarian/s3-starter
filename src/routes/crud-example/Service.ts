@@ -46,7 +46,8 @@ export const updateFormSchema = z.object({
 	firstName: z.string().min(1),
 	lastName: z.string().min(1),
 	phone: z.string().min(1),
-	userApproved: z.boolean().optional().default(false)
+	userApproved: z.boolean().optional().default(false),
+	roles: z.string().min(1)
 });
 
 // Define Remove Schema
@@ -153,6 +154,7 @@ export async function deleteConfiguration(event: RequestEvent): Promise<GuiData<
 export async function updateConfiguration(event: RequestEvent): Promise<GuiData<User>> {
 	//VALIDATE FORM
 	const form = await superValidate(event, updateFormSchema);
+	console.log(form.data);
 	if (!form.valid) {
 		return {
 			form,
@@ -179,6 +181,23 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 			where: configurationId,
 			data: configurationUpdate
 		});
+		const userRoles = form.data.roles.split(',').map((role) => ({
+			userId: updatedUser.id,
+			role
+		}));
+		console.log({ initialRoles: form.data.roles, userRoles });
+		//remove previous roles
+		await prismaClient.userRole.deleteMany({
+			where: {
+				userId: updatedUser.id
+			}
+		});
+		//create user roles
+		const createManyRoles = await prismaClient.userRole.createMany({
+			data: userRoles,
+			skipDuplicates: true
+		});
+		// console.log({ createManyRoles });
 		return { data: updatedUser, form };
 	} catch (e) {
 		return {

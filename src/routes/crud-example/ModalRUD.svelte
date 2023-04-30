@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { modalStore } from '@skeletonlabs/skeleton';
+	import { ListBox, ListBoxItem, SlideToggle, modalStore } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import FormNotifications from '$lib/components/crud-utils/FormNotifications.svelte';
 	import type { User } from '@prisma/client';
+	import { userRoleEnumValues } from '$lib/database/auth/userData.type';
 	export let parent: any;
 	export let selection: User;
 	export let data: PageData;
@@ -42,14 +43,16 @@
 	});
 
 	//On selection change
+	let roles: string[] = userRoleEnumValues;
 	$: onSelectionChange(selection);
-	function onSelectionChange(selection: User) {
+	function onSelectionChange(selection: any) {
+		console.log({ selection });
 		$updateForm.email = selection.email;
 		$updateForm.firstName = selection.firstName ?? '';
 		$updateForm.lastName = selection.lastName ?? '';
 		$updateForm.phone = selection.phone ?? '';
 		$updateForm.userApproved = selection.userApproved;
-		selectUserApproved = $updateForm.userApproved === true ? 'approved' : 'non-approved';
+		$updateForm.roles = selection.roles.map((roleItem: any) => roleItem.role);
 	}
 	// Base Classes
 	const cBase = 'card p-4 w-modal shadow-xl space-y-4';
@@ -59,8 +62,6 @@
 	function handleSubmit() {
 		console.log('SUBMITTED');
 	}
-	//reactive form components
-	let selectUserApproved = 'non-approved';
 </script>
 
 <FormNotifications {formResult} />
@@ -86,15 +87,6 @@
 		>
 			ID:{selection.id}
 			<input class="hidden" type="text" name="id" bind:value={selection.id} />
-			<!-- <input
-				type="text"
-				name="id"
-				value={selection.id}
-				class="input {$updateErrors.firstName ? 'input-error' : ''}"
-				data-invalid={$updateErrors.firstName}
-				{...$updateConstraints.firstName}
-				placeholder="Enter first name..."
-			/> -->
 			<label class="label">
 				<span>First Name</span>
 				<input
@@ -143,25 +135,29 @@
 					placeholder="Enter phone number..."
 				/>
 			</label>
-			<input
-				class="hidden"
-				bind:checked={$updateForm.userApproved}
-				type="checkbox"
-				name="userApproved"
-			/>
 			<label class="label">
+				<input
+					class="hidden"
+					bind:checked={$updateForm.userApproved}
+					type="checkbox"
+					name="userApproved"
+				/>
 				<span>User status</span>
-				<select
-					bind:value={selectUserApproved}
-					on:change={() =>
-						($updateForm.userApproved = selectUserApproved === 'approved' ? true : false)}
-					class="select"
-					size="2"
-				>
-					<option value="approved">Approved</option>
-					<option value="non-approved">Non approved</option>
-				</select>
+				<SlideToggle name="slide" bind:checked={$updateForm.userApproved} />
 			</label>
+			<label class="label">
+				<input class="input" bind:value={$updateForm.roles} type="json" name="roles" />
+				{JSON.stringify($updateForm.roles)}
+				<span>User roles:</span>
+				<ListBox multiple>
+					{#each roles as role}
+						<ListBoxItem bind:group={$updateForm.roles} name="medium" value={role}
+							>{role}</ListBoxItem
+						>
+					{/each}
+				</ListBox>
+			</label>
+
 			<!-- prettier-ignore -->
 			<footer class="modal-footer {parent.regionFooter}">
 			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>{parent.buttonTextCancel}</button>

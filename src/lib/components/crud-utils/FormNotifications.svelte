@@ -17,6 +17,12 @@
 		const resultMessage: string = formResult.data.form.message;
 		if (status === 400) {
 			//In this case you have to display on your form the errors (hint use superforms $errors)
+			console.log({ formResult, errors: formResult.data.form.errors });
+			const t: ToastSettings = {
+				message: formResult.data.form.errors.roles,
+				background: 'variant-filled-error'
+			};
+			toastStore.trigger(t);
 		}
 		if (status > 400) {
 			//form validation error

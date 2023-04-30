@@ -26,7 +26,8 @@
 			'phone',
 			'totalRevenue',
 			'userApproved',
-			'properties'
+			'properties',
+			'roles'
 		]),
 		// Optional: A list of footer labels.
 		foot: ['Total', '', '<code>31.7747</code>']

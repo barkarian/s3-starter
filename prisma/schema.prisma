@@ -21,9 +21,11 @@ model User {
 }
 
 model UserRole {
-  userId String @id
+  userId String
   role   String
   user   User   @relation(fields: [userId], references: [id])
+
+  @@id([role, userId])
 }
 
 model Property {
