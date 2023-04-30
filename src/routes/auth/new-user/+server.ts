@@ -1,15 +1,16 @@
-import { hasAllRoles } from '$lib/database/auth/authRoles.js';
+import { hasAllRoles, hasSession } from '$lib/database/auth/authRoles.js';
 import { UserRoleEnum } from '$lib/database/auth/userData.type.js';
 import { json, redirect } from '@sveltejs/kit';
+import { createConfiguration } from './Service.js';
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST(event) {
-	if (!event.locals.session || !event.locals.session?.user) {
+	if (!hasSession(event)) {
 		throw redirect(302, '/auth');
 	}
-	if (!hasAllRoles(event.locals.session?.user?.roles, [UserRoleEnum.NEW_USER])) {
+	if (!hasAllRoles(event, [UserRoleEnum.NEW_USER])) {
 		throw redirect(302, '/auth');
 	}
-	const { a, b } = await event.request.json();
-	return json(a + b);
+	const response = createConfiguration(event);
+	return json(response);
 }

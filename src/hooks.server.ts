@@ -18,19 +18,17 @@ export const handle: Handle = sequence(
 			],
 			callbacks: {
 				async jwt({ token, user }) {
-					// console.log({ jwtCallbackParams });
-					// const { token, user } = jwtCallbackParams;
 					//When we got a user we check his email retrieve his data from the database and create his token
+					//console.log({ msg: 'REVALIDATE TOKEN user must not be empty', token, user });
 					if (user) {
-						console.log({ id: user.id });
+						token.id = user?.id ?? token.id;
 						//Get user from the database and user roles and meta
 						const userFromDb = await prismaClient.user.findFirst({
 							include: { roles: true },
 							where: {
-								id: user.id
+								id: token.id ?? ''
 							}
 						});
-						console.log({ user, userFromDb });
 						//If there's not a user in the database
 						if (!userFromDb && user?.email === SECRET_ADMIN_EMAIL) {
 							token.roles = [UserRoleEnum.ADMIN];
@@ -40,6 +38,27 @@ export const handle: Handle = sequence(
 							token.meta = undefined;
 						}
 						//If there's a user in the database ADD-YOUR-BUSINESS LOGIC HERE
+						// if (userFromDb) {
+						// 	//Construct META DATA
+						// 	const userMeta: UserMeta = {
+						// 		firstName: userFromDb.firstName,
+						// 		lastName: userFromDb.lastName,
+						// 		phone: userFromDb.phone,
+						// 		userApproved: userFromDb.userApproved
+						// 	};
+						// 	token.roles = userFromDb.roles.map((role) => role.role);
+						// 	token.meta = userMeta;
+						// }
+					}
+					if (token || user) {
+						//Get user from the database and user roles and meta
+						const userFromDb = await prismaClient.user.findFirst({
+							include: { roles: true },
+							where: {
+								id: token.id ?? ''
+							}
+						});
+
 						if (userFromDb) {
 							//Construct META DATA
 							const userMeta: UserMeta = {
@@ -57,9 +76,11 @@ export const handle: Handle = sequence(
 				session(sessionCallbackParams: any) {
 					const { session, token } = sessionCallbackParams;
 					if (token && session.user) {
+						session.user.id = token.id;
 						session.user.roles = token.roles;
 						session.user.meta = token.meta;
 					}
+					event.locals.session = session;
 					return session;
 				}
 			},
