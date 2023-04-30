@@ -146,8 +146,8 @@
 				<SlideToggle name="slide" bind:checked={$updateForm.userApproved} />
 			</label>
 			<label class="label">
-				<input class="input" bind:value={$updateForm.roles} type="json" name="roles" />
-				{JSON.stringify($updateForm.roles)}
+				<input class="hidden" bind:value={$updateForm.roles} type="json" name="roles" />
+				<!-- {JSON.stringify($updateForm.roles)} -->
 				<span>User roles:</span>
 				<ListBox multiple>
 					{#each roles as role}
