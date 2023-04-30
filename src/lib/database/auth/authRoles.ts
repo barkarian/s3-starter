@@ -43,9 +43,21 @@ export async function getUserRoles(userId: string): Promise<string[]> {
 
 	return user.roles.map((userRole: UserRole) => userRole.role);
 }
+type HasAllRolesSettings = {
+	event: RequestEvent;
+	requiredRoles: string[];
+	failure_redirect: string;
+};
 
-export function hasAllRoles(userRoles: string[], requiredRoles: string[]) {
-	return requiredRoles.every((role) => userRoles.includes(role));
+export function hasAllRoles(event: RequestEvent, requiredRoles: string[]) {
+	if (!event.locals.session || !event.locals.session?.user) {
+		return false;
+	}
+	return requiredRoles.every((role) => event.locals.session?.user?.roles.includes(role));
+}
+
+export function hasSession(event: RequestEvent) {
+	return event.locals.session && event.locals.session?.user;
 }
 
 export async function revalidateTokenAndCheckUserHasAllRoles(

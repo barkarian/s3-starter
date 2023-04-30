@@ -7,6 +7,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import type { Session, UserMeta } from './app';
 import { prismaClient } from '$lib/server/prismaClient';
 import { UserRoleEnum } from '$lib/database/auth/userData.type';
+import { hasAllRoles } from '$lib/database/auth/authRoles';
 
 export const handle: Handle = sequence(
 	SvelteKitAuth(async (event) => {
@@ -73,19 +74,16 @@ export const handle: Handle = sequence(
 async function authorization(handleInput: any) {
 	const { event, resolve } = handleInput;
 	const session: Session = await event.locals.getSession();
+	event.locals.session = session;
 
-	// //In case of new user
+	//In case of new user
 	if (event.url.pathname.startsWith('/authenticated-admin')) {
-		if (!session || !session.user) {
-			throw redirect(303, '/auth');
-		}
-		if (!session.user.roles.includes(UserRoleEnum.ADMIN)) {
+		if (!hasAllRoles(event, [UserRoleEnum.ADMIN])) {
 			throw redirect(303, '/auth');
 		}
 	}
 
 	// If the request is still here, just proceed as normally
-	event.locals.session = session;
 	return resolve(event);
 }
 
