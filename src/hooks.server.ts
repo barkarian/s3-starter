@@ -98,7 +98,7 @@ async function authorization(handleInput: any) {
 	event.locals.session = session;
 
 	//In case of new user
-	if (event.url.pathname.startsWith('/authenticated-admin')) {
+	if (event.url.pathname.startsWith('/auth-admin')) {
 		if (!hasAllRoles(event, [UserRoleEnum.ADMIN])) {
 			throw redirect(303, '/auth');
 		}

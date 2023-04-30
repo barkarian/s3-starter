@@ -21,6 +21,7 @@
 	function drawerOpen(): void {
 		drawerStore.open();
 	}
+
 	function getInitialOfName(name: string): string {
 		let initials = '';
 		const nameArray = name.split(' ');
@@ -32,7 +33,7 @@
 </script>
 
 <Drawer>
-	<Navigation />
+	<Navigation {data} />
 </Drawer>
 <Toast zIndex="z-[999]" position="tr" />
 
@@ -71,7 +72,7 @@
 		</AppBar>
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		<Navigation />
+		<Navigation {data} />
 	</svelte:fragment>
 	<!-- Page Route Content -->
 	<slot />

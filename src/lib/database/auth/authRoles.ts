@@ -1,6 +1,7 @@
 import type { Prisma, UserRole } from '@prisma/client';
 import { prismaClient as prisma } from '$lib/server/prismaClient';
 import { redirect, type RequestEvent } from '@sveltejs/kit';
+import type { Session } from '../../../app';
 
 export async function addUserRoles(userId: string, newRoles: string[]): Promise<void> {
 	const user = await prisma.user.findUnique({
@@ -43,6 +44,11 @@ export async function getUserRoles(userId: string): Promise<string[]> {
 
 	return user.roles.map((userRole: UserRole) => userRole.role);
 }
+
+export async function getUserRolesFromSession(session: Session): Promise<string[]> {
+	return session?.user?.roles ?? [];
+}
+
 type HasAllRolesSettings = {
 	event: RequestEvent;
 	requiredRoles: string[];
