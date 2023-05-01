@@ -8,9 +8,9 @@ When a user is inserted he get the role "user" and the admin can see them from h
 The first admin's email is specified from the related .env variable. You can check roles in order to build all kinds of applications.
 The project is deployable as it is to all of the serverless infrastructures like Vercel,Netlify etc. although it whould need a database url (I used Planetscale for that).
 
-- S1:Uses Skeleton UI toolkit
-- S2:Takes advantage of Superforms
-- S3:Uses Sveltekit
+- ⚡S1:Uses Skeleton UI toolkit
+- ⚡S2:Takes advantage of Superforms
+- ⚡S3:Uses Sveltekit
 - Google oauth
 - Easy authentication and role management
 - New users are prompted to a new-user page in order to put all their necessary meta-data
