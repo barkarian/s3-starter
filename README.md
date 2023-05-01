@@ -1,6 +1,6 @@
 # Barkarian
 
-## _Supabase Starter Template with User Roles_
+## S3 Starter Template with User Roles\_
 
 This is a starter template that takes advantage of SvelteKit,Superforms and Skeleton UI toolkit it also uses AuthJS JWTs based authentication and supports user roles (each user can have many roles).
 New users are prompted to "auth/new-user" and they complete all of their necessary informations in order for them to be inserted to the database.
@@ -59,8 +59,6 @@ This will start the server and launch the application in your browser. You can t
 
 This starter template includes a simple UI and some example routes that showcase how easy it is to work with this as a starting template. The code that is responsible for authentication both serverside and frontend is located in the auth folder, and some small pieces are inside hook.server.ts and the layout layer of the src root folder.
 
-You can update user roles by accessing the Supabase user's metadata. From the backend files, you can check the roles to build all kinds of applications without necessarily needing to use the Supabase database.
-
 ## Prisma Planetscale Commands
 
 ```sh
@@ -78,4 +76,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-This starter template is based on the SvelteKit starter template and uses Supabase for authentication.
+This starter template is based on the SvelteKit starter template and uses Superforms and SkeletonUI.
