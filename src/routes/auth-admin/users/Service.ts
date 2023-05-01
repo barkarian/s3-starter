@@ -87,7 +87,6 @@ export async function findConfigurations(
 			skip: page * limit,
 			take: limit
 		});
-		// users.forEach((u) => console.log(u.roles));
 		return {
 			data: users,
 			pagination: {
@@ -154,7 +153,6 @@ export async function deleteConfiguration(event: RequestEvent): Promise<GuiData<
 export async function updateConfiguration(event: RequestEvent): Promise<GuiData<User>> {
 	//VALIDATE FORM
 	const form = await superValidate(event, updateFormSchema);
-	console.log(form.data);
 	if (!form.valid) {
 		return {
 			form,
@@ -185,7 +183,6 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 			userId: updatedUser.id,
 			role
 		}));
-		console.log({ initialRoles: form.data.roles, userRoles });
 		//remove previous roles
 		await prismaClient.userRole.deleteMany({
 			where: {
@@ -193,11 +190,10 @@ export async function updateConfiguration(event: RequestEvent): Promise<GuiData<
 			}
 		});
 		//create user roles
-		const createManyRoles = await prismaClient.userRole.createMany({
+		await prismaClient.userRole.createMany({
 			data: userRoles,
 			skipDuplicates: true
 		});
-		// console.log({ createManyRoles });
 		return { data: updatedUser, form };
 	} catch (e) {
 		return {

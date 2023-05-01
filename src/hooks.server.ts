@@ -19,7 +19,6 @@ export const handle: Handle = sequence(
 			callbacks: {
 				async jwt({ token, user }) {
 					//When we got a user we check his email retrieve his data from the database and create his token
-					//console.log({ msg: 'REVALIDATE TOKEN user must not be empty', token, user });
 					if (user) {
 						token.id = user?.id ?? token.id;
 						//Get user from the database and user roles and meta
@@ -37,18 +36,6 @@ export const handle: Handle = sequence(
 							token.roles = [UserRoleEnum.NEW_USER];
 							token.meta = undefined;
 						}
-						//If there's a user in the database ADD-YOUR-BUSINESS LOGIC HERE
-						// if (userFromDb) {
-						// 	//Construct META DATA
-						// 	const userMeta: UserMeta = {
-						// 		firstName: userFromDb.firstName,
-						// 		lastName: userFromDb.lastName,
-						// 		phone: userFromDb.phone,
-						// 		userApproved: userFromDb.userApproved
-						// 	};
-						// 	token.roles = userFromDb.roles.map((role) => role.role);
-						// 	token.meta = userMeta;
-						// }
 					}
 					if (token || user) {
 						//Get user from the database and user roles and meta
